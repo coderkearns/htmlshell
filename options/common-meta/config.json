@@ -1,0 +1,4 @@
+{
+  "description": "Includes a viewport meta tag for responsiveness.",
+  "location": "head"
+}
