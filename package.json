@@ -1,25 +1,25 @@
 {
-  "name": "@coderkearns/htmlshell",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "bin": {
-    "htmlshell": "./index.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/coderkearns/htmlshell.git"
-  },
-  "author": "Carter Kearns <coder.kearns@gmail.com> (https://github.com/coderkearns)",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/coderkearns/htmlshell/issues"
-  },
-  "homepage": "https://github.com/coderkearns/htmlshell#readme",
-  "dependencies": {
-    "commander": "^7.1.0"
-  }
+    "name": "@coderkearns/htmlshell",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "bin": {
+        "htmlshell": "./index.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/coderkearns/htmlshell.git"
+    },
+    "author": "Carter Kearns <coder.kearns@gmail.com> (https://github.com/coderkearns)",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/coderkearns/htmlshell/issues"
+    },
+    "homepage": "https://github.com/coderkearns/htmlshell#readme",
+    "dependencies": {
+        "commander": "^7.1.0"
+    }
 }

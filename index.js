@@ -1,36 +1,100 @@
 #!/usr/bin/env node
-const { program } = require('commander');
+const { parseOptions } = require('commander');
+const program = require('commander');
+const fs = require('fs');
+const path = require('path');
 
-const { version } = require("./package.json")
-program.version(version);
+program.version(require("./package").version)
 
-const folders = require(__dirname + '/folders.js');
-const get_html = require(__dirname + "/get_html.js")
-const fixargs = require(__dirname + '/fixargs.js')
-let options = folders.get_folders_data()
+const options = getOptions()
+registerOptions(program, options)
 
-for (option of options) {
-  program.option(...option.command)
+program.parse()
+const args = program.opts()
+
+const doc = applyOptions(options, args)
+const html = generateHtml(doc)
+
+console.log(html)
+
+function getOptions() {
+  const optionFiles = fs.readdirSync(path.join(__dirname, 'options'))
+  const options = []
+  optionFiles.forEach(file => {
+    const option = require(path.join(__dirname, 'options', file))
+    options.push(option)
+  })
+  return options
 }
-program.parse(process.argv)
-const args = fixargs(program.opts())
 
-let tofit = {}
-for (option of options) {
-  let doshow = args[option.name]
-  if (doshow) {
-    tofit[option.name] = {
-      location: option.location,
-      html: option.html
-    }
+function registerOptions(program, options) {
+  options.forEach(option => registerOption(program, option))
+}
+
+function registerOption(program, option) {
+  if (option.args && option.args.length > 0) {
+    program.option(`--${option.name} ${option.args}`, option.description)
   } else {
-    tofit[option.name] = {
-      location: option.location,
-      html: option.not
-    }
+    program.option(`--${option.name}`, option.description)
   }
 }
 
-html = get_html(tofit)
+function filterOptions(options, args) {
+  return options.filter(option => args[option.name] !== undefined)
+}
 
-console.log(html)
+function applyOptions(options, args) {
+  const doc = createDoc()
+  options.forEach(option => {
+    if (args[option.name]) {
+      applyOption(doc, option, args[option.name])
+    } else {
+      notApplyOption(doc, option)
+    }
+  })
+  return doc
+}
+
+function applyOption(doc, option, args) {
+  if (option.add) {
+    option.add(doc, args)
+  }
+}
+
+function notApplyOption(doc, option) {
+  if (option.not) {
+    option.not(doc)
+  }
+}
+
+function createDoc() {
+  return {
+    html: [],
+    body: [],
+    head: [],
+  }
+}
+
+function generateHtml(doc) {
+  const body = doc.body.map(indent(1)).join('\n')
+  const head = doc.head.map(indent(1)).join('\n')
+  const html = `${doc.html.join('\n')}
+<html>
+  <head>
+${head}
+  </head>
+  <body>
+${body}
+  </body>
+</html>`
+  return html
+}
+
+function indent(amt) {
+  return function (text) {
+    return text
+      .split("\n")
+      .map(line => '\t'.repeat(amt) + line)
+      .join('\n')
+  }
+}
