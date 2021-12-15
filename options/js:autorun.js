@@ -5,7 +5,7 @@ const html = `<script>
 </script>`
 
 module.exports = {
-    name: 'javascript:autorun',
+    name: 'js:autorun',
     description: "Add inline javascript that will run on page load",
     add: function (doc) {
         doc.body.push(html)

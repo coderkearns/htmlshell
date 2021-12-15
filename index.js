@@ -32,7 +32,7 @@ function registerOptions(program, options) {
 }
 
 function registerOption(program, option) {
-  if (option.args && option.args.length > 0) {
+  if (option.args) {
     program.option(`--${option.name} ${option.args}`, option.description)
   } else {
     program.option(`--${option.name}`, option.description)
