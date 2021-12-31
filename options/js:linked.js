@@ -8,14 +8,14 @@ module.exports = {
     args: '<location:src...>',
     add: function (doc, args) {
         args.forEach(src => {
-            [location, src] = url.split(':')
-            if (!location || !src) {
+            [location, url] = src.split(':')
+            if (!location || !url) {
                 throw new Error(`--js:linked requires arguments in the form of "<location>:<src>"`)
             }
             if (!["head", "body"].includes(location)) {
                 throw new Error(`--js:linked location must be either "head" or "body"`)
             }
-            doc[location].push(html.replace("{}", src))
+            doc[location].push(html.replace("{}", url))
         })
     }
 }
